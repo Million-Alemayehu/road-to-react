@@ -1,63 +1,59 @@
 import * as React from 'react';
 
+const initiaStories =[
+  { 
+    title: 'React',
+    url: 'https://reactjs.org/',
+    author: 'Jordan Walke',
+    num_comments: 3,
+    points: 4,
+    objectID: 0,
+  },
+  { 
+    title: 'Redux',
+    url: 'https://redux.js.org/',
+    author: 'Dan Abramov, Andrew Clark',
+    num_comments: 2,
+    points: 5,
+    objectID: 1,
+  },
+];
+
+const getAsyncStories = () =>
+  new Promise((resolve) =>
+    setTimeout(
+      () => resolve({data: {stories: initiaStories}}),
+      2000
+    )
+  );
+
 const useStorageState = (key, initialState) => {
     const [value, setValue] = React.useState(
       localStorage.getItem(key) || initialState
-  );
+    );
 
     React.useEffect(() => {
       localStorage.setItem(key, value);
     }, [value, key]);
 
     return [value, setValue];
-  };
-
-    const initiaStories =[
-    { 
-      title: 'React',
-      url: 'https://reactjs.org/',
-      author: 'Jordan Walke',
-      num_comments: 3,
-      points: 4,
-      objectID: 0,
-    },
-    { 
-      title: 'Redux',
-      url: 'https://redux.js.org/',
-      author: 'Dan Abramov, Andrew Clark',
-      num_comments: 2,
-      points: 5,
-      objectID: 1,
-    },
-  ];
+};
 
 const App = () => {
- { /*const stories =[
-    { 
-      title: 'React',
-      url: 'https://reactjs.org/',
-      author: 'Jordan Walke',
-      num_comments: 3,
-      points: 4,
-      objectID: 0,
-    },
-    { 
-      title: 'Redux',
-      url: 'https://redux.js.org/',
-      author: 'Dan Abramov, Andrew Clark',
-      num_comments: 2,
-      points: 5,
-      objectID: 1,
-    },
-  ];
-*/}
+
   const [searchTerm, setSearchTerm] = useStorageState(
         'React',
         'search'
       );
       
 
-  const [stories, setStories] = React.useState(initiaStories);
+  const [stories, setStories] = React.useState([]);
+
+  React.useEffect(() => {
+    getAsyncStories().then((result) => {
+      setStories(result.data.stories);
+    });
+  }, []);
 
   const handleRemoveStory = (item) => {
       const newStories = stories.filter(
@@ -153,7 +149,6 @@ const Item = ({item, onRemoveItem}) =>(
     </span>
   </li>
 );
-
 
 export default App;
 
