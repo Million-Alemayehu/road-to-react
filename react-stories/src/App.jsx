@@ -109,7 +109,7 @@ const App = () => {
     setSearchTerm(event.target.value);
   };
 
-  const searchedStories = stories.filter((story) => 
+  const searchedStories = stories.data.filter((story) => 
     story.title.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
@@ -128,9 +128,15 @@ const App = () => {
 
         <hr />
 
-        {/*<List list={searchedStories} onRemoveItem={handleRemoveStory}/>*/}
-        {isError && <p>Something went wrong ...</p>}
-        {isLoading ?( <p>Loading ...</p> ) :(<List list={searchedStories} onRemoveItem={handleRemoveStory}/>)}
+        {stories.isError && <p>Something went wrong ...</p>}
+        {stories.isLoading ?( 
+          <p>Loading ...</p> 
+          ) :(
+            <List 
+              list={searchedStories} 
+              onRemoveItem={handleRemoveStory}
+            />
+          )}
       </div>
     );
 };
