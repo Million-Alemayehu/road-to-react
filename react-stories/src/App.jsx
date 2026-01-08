@@ -78,12 +78,12 @@ const App = () => {
 
   React.useEffect(() => {
     handleFetchStories();
-  },[handleFetchStories]);
-
+  }, [handleFetchStories]);
+  
   const handleRemoveStory = (item) => {
       dispatchStories({
         type: 'REMOVE_STORY',
-        payload: item
+        payload: item,
       });
   };
 
@@ -107,6 +107,7 @@ const App = () => {
         <hr />
 
         {stories.isError && <p>Something went wrong ...</p>}
+
         {stories.isLoading ?( 
           <p>Loading ...</p> 
           ) :(
@@ -160,7 +161,6 @@ const List = ({list, onRemoveItem}) => (
 );
 
 const Item = ({item, onRemoveItem}) =>(
-
   <li >
     <span>
       <a href={item.url}>{item.title}</a>
